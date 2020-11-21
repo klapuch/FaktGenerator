@@ -1,0 +1,69 @@
+version: '3'
+networks:
+  faktgenerator:
+    external: true
+
+volumes:
+  faktgenerator-postgres:
+    external: true
+  faktgenerator-elastic:
+    external: true
+
+services:
+  php-fpm:
+    environment:
+      - FAKTGENERATOR_ENV=local
+    build: env/docker/php-fpm
+    working_dir: /var/www/faktgenerator
+    volumes:
+      - ./:/var/www/faktgenerator
+    networks:
+      - faktgenerator
+
+  postgres:
+    container_name: faktgenerator-postgres
+    working_dir: /var/www/faktgenerator
+    image: postgres:13
+    env_file: env/docker/.env
+    volumes:
+      - ./:/var/www/faktgenerator:ro
+      - faktgenerator-postgres:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks:
+      - faktgenerator
+
+  nginx:
+    build: env/docker/nginx
+    volumes:
+      - ./:/var/www/faktgenerator
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - faktgenerator
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
+    container_name: faktgenerator-elasticsearch
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+      - cluster.name=es-docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - 9200:9200
+    networks:
+      - faktgenerator
+    volumes:
+      - faktgenerator-elastic:/usr/share/elasticsearch/data
+
+  scraper:
+    build: env/docker/scraper
+    container_name: faktgenerator-scraper
+    working_dir: /var/www/faktgenerator/apps/scraper
+    networks:
+      - faktgenerator
+    volumes:
+      - ./apps/scraper:/var/www/faktgenerator/apps/scraper

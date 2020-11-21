@@ -1,0 +1,20 @@
+includes:
+	- vendor/phpstan/phpstan-strict-rules/rules.neon
+	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+	level: max
+	inferPrivatePropertyTypeFromConstructor: true
+	checkGenericClassInNonGenericObjectType: false
+	ignoreErrors:
+		-
+			message: '#Method FaktGenerator\\Command\\Jobs\\Job::getName\(\) has no return typehint specified\.#'
+			path: %rootDir%/../../../App/Command/Jobs/Job.php
+
+		-
+			message: '~Strict comparison using === between int and false will always evaluate to false\.~'
+			path: %rootDir%/../../../App/Command/Build/Assets.php
+
+		-
+			message: '~Strict comparison using === between int and false will always evaluate to false\.~'
+			path: %rootDir%/../../../App/Command/Build/Domains.php

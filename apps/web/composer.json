@@ -1,0 +1,46 @@
+{
+    "name": "klapuch/faktgenerator",
+    "description": "FaktGenerator web",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=7.4",
+        "ext-pdo": "*",
+        "ext-simplexml": "*",
+        "ext-sysvsem": "*",
+        "ext-xsl": "*",
+        "elasticsearch/elasticsearch": "^7.6",
+        "klapuch/configuration": "^0.0.3",
+        "klapuch/lock": "^0.2.0",
+        "klapuch/storage": "^0.1.0",
+        "nette/mail": "^3.1",
+        "nette/utils": "^3.1",
+        "symfony/console": "^5.0",
+        "symfony/process": "^5.0",
+        "tracy/tracy": "^2.7"
+    },
+    "require-dev": {
+        "consistence/coding-standard": "^3.10",
+        "nette/tester": "^2.3",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
+        "phpstan/phpstan": "^0.12.7",
+        "phpstan/phpstan-strict-rules": "^0.12.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "FaktGenerator\\": [
+                "App/"
+            ]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FaktGenerator\\": [
+                "Tests/"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
